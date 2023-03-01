@@ -1,17 +1,36 @@
-(function(ext) {
-  // Define the 'keep part' block
-  ext.keepPart = function(text, start, end, callback) {
-    var result = text.substring(start, end); // Extract the desired part of the string
-    callback(result); // Pass the result to Scratch
-  };
+class KeepPartExtension {
+  getInfo() {
+    return {
+      id: 'keep_part',
+      name: 'Keep Part',
+      blocks: [
+        {
+          opcode: 'keepPart',
+          blockType: Scratch.BlockType.REPORTER,
+          text: 'keep part %s from %n to %n',
+          arguments: {
+            s: {
+              type: Scratch.ArgumentType.STRING,
+              defaultValue: ''
+            },
+            n1: {
+              type: Scratch.ArgumentType.NUMBER,
+              defaultValue: 1
+            },
+            n2: {
+              type: Scratch.ArgumentType.NUMBER,
+              defaultValue: 5
+            }
+          }
+        }
+      ]
+    };
+  }
 
-  // Describe the 'keep part' block for Scratch
-  var descriptor = {
-    blocks: [
-      ['R', 'keep part %s from %n to %n', 'keepPart', '', 1, 5]
-    ]
-  };
+  keepPart({s, n1, n2}) {
+    var result = s.substring(n1, n2);
+    return result;
+  }
+}
 
-  // Register the extension with Scratch
-  ScratchExtensions.register('Keep Part Extension', descriptor, ext);
-})({});
+Scratch.extensions.register(new KeepPartExtension());
