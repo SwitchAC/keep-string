@@ -1,25 +1,17 @@
-class KeepPartExtension {
+class RemoveAfterSpaceExtension {
   getInfo() {
     return {
-      id: 'keep_part',
-      name: 'Keep Part',
+      id: 'removeAfterSpace',
+      name: 'Remove After Space',
       blocks: [
         {
-          opcode: 'keepPart',
+          opcode: 'removeAfterSpace',
           blockType: Scratch.BlockType.REPORTER,
-          text: 'keep part %s from %n to %n',
+          text: 'Remove everything after first space in [TEXT]',
           arguments: {
-            s: {
+            TEXT: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: ''
-            },
-            n1: {
-              type: Scratch.ArgumentType.NUMBER,
-              defaultValue: 1
-            },
-            n2: {
-              type: Scratch.ArgumentType.NUMBER,
-              defaultValue: 5
+              defaultValue: 'hello world'
             }
           }
         }
@@ -27,10 +19,16 @@ class KeepPartExtension {
     };
   }
 
-  keepPart({s, n1, n2}) {
-    var result = s.substring(n1, n2);
-    return result;
+  removeAfterSpace({ TEXT }) {
+    const index = TEXT.indexOf(' ');
+    if (index === -1) {
+      // No spaces found, return the original string
+      return TEXT;
+    } else {
+      // Return the substring up to the first space
+      return TEXT.substring(0, index);
+    }
   }
 }
 
-Scratch.extensions.register(new KeepPartExtension());
+Scratch.extensions.register(new RemoveAfterSpaceExtension());
